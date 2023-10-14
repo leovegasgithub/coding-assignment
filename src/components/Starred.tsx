@@ -2,33 +2,27 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { clearAllStarred } from "../data/starredSlice";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
-import Movie from "./Movie";
-import CSS from '../styles/starred.module.scss';
+import CSS from "../styles/starred.module.scss";
+import Movies from "./Movies";
 
 const Starred = ({ viewTrailer }) => {
-  const starred = useAppSelector((state) => state.starred);
+  const starredMovies = useAppSelector((state) => state.starred.starredMovies);
   const dispatch = useAppDispatch();
 
   return (
     <div className={CSS.Starred} data-testid="starred">
-      {starred.starredMovies.length > 0 && (
-        <div data-testid="starred-movies" className={CSS.starredMovies}>
+      {starredMovies.length > 0 && (
+        <>
           <h6 className={CSS.header}>Starred movies</h6>
-          <div className={CSS.row}>
-            {starred.starredMovies.map((movie) => (
-              <Movie movie={movie} key={movie.id} viewTrailer={viewTrailer} />
-            ))}
-          </div>
-
+          <Movies movies={starredMovies} viewTrailer={viewTrailer} />
           <footer className="text-center">
-            <button className="btn btn-primary" onClick={() => dispatch(clearAllStarred())}>
+            <button className={`${CSS.btn} btn btn-primary`} onClick={() => dispatch(clearAllStarred())}>
               Remove all starred
             </button>
           </footer>
-        </div>
+        </>
       )}
-
-      {starred.starredMovies.length === 0 && (
+      {starredMovies && starredMovies.length === 0 && (
         <div className="text-center empty-cart">
           <i className="bi bi-star" />
           <p>There are no starred movies.</p>

@@ -7,6 +7,7 @@ describe("MovieSlice test", () => {
     const initialState = moviesSlice.reducer(
       {
         movies: [],
+        page: 1,
         fetchStatus: "",
       },
       action
@@ -22,6 +23,7 @@ describe("MovieSlice test", () => {
     const initialState = moviesSlice.reducer(
       {
         movies: [],
+        page: 1,
         fetchStatus: "",
       },
       action
@@ -34,6 +36,7 @@ describe("MovieSlice test", () => {
     const initialState = moviesSlice.reducer(
       {
         movies: [],
+        page: 1,
         fetchStatus: "",
       },
       action

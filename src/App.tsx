@@ -1,38 +1,58 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Route, Routes, createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 import "reactjs-popup/dist/index.css";
-import "./app.scss";
+import CSS from "./app.module.scss";
 import Header from "./components/Header";
+import Modal from "./components/Modal";
 import Movies from "./components/Movies";
 import Starred from "./components/Starred";
 import WatchLater from "./components/WatchLater";
 import YouTubePlayer from "./components/YoutubePlayer";
-import { API_KEY, ENDPOINT, ENDPOINT_DISCOVER, ENDPOINT_MOVIE, ENDPOINT_SEARCH } from "./constants";
-import { fetchMovies } from "./data/moviesSlice";
+import { ENDPOINT_DISCOVER, ENDPOINT_MOVIE, ENDPOINT_SEARCH } from "./constants";
+import { fetchMovies, removeAllMovies } from "./data/moviesSlice";
 import { useAppDispatch, useAppSelector } from "./lib/hooks";
 import { IMovie } from "./lib/types";
-import Modal from "./components/Modal";
 
 const App = () => {
   const movies = useAppSelector((state) => state.movies.movies);
+  const page = useAppSelector((state) => state.movies.page);
+  const pageRef = useRef<number>(page);
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [loading, setLoading] = useState(false);
   const searchQuery = searchParams.get("search");
+  const searchQueryRef = useRef<string | null>(searchQuery);
   const [videoKey, setVideoKey] = useState<null | undefined>();
   const navigate = useNavigate();
 
-  const getSearchResults = (query) => {
-    if (query !== "") {
-      dispatch(fetchMovies(`${ENDPOINT_SEARCH}&query=` + query));
+  useEffect(() => {
+    pageRef.current = page;
+  }, [page]);
+
+  useEffect(() => {
+    searchQueryRef.current = searchQuery;
+  }, [searchQuery]);
+
+  const getSearchResults = async (query: string) => {
+    if (loading) return;
+    setLoading(true);
+
+    if (searchQueryRef.current !== "") {
       setSearchParams(createSearchParams({ search: query }));
+      return dispatch(fetchMovies(`${ENDPOINT_SEARCH}&page=${pageRef.current}&query=` + searchQueryRef.current));
     } else {
-      dispatch(fetchMovies(ENDPOINT_DISCOVER));
       setSearchParams();
+      return dispatch(fetchMovies(`${ENDPOINT_DISCOVER}&page=${pageRef.current}`));
     }
   };
 
-  const searchMovies = (query) => {
+  useEffect(() => {
+    setLoading(false);
+  }, [movies.length]);
+
+  const searchMovies = (query: string) => {
     navigate("/");
+    dispatch(removeAllMovies());
     getSearchResults(query);
   };
 
@@ -44,29 +64,51 @@ const App = () => {
     if (!movie.id) return;
     setVideoKey(null);
     const videoData = await fetch(ENDPOINT_MOVIE.replace("MOVIE_ID_PLACEHOLDER", String(movie.id))).then((response) => response.json());
-
     if (videoData.videos && videoData.videos.results.length) {
       const trailer = videoData.videos.results.find((vid) => vid.type === "Trailer");
       setVideoKey(trailer ? trailer.key : videoData.videos.results[0].key);
+      window.scrollTo(0, 0);
     }
   };
 
   useEffect(() => {
-    const getMovies = () => {
+    let promise;
+    const getMovies = async () => {
       if (searchQuery) {
-        dispatch(fetchMovies(`${ENDPOINT_SEARCH}&query=` + searchQuery));
+        promise = dispatch(fetchMovies(`${ENDPOINT_SEARCH}&page=${page}&query=` + searchQuery));
       } else {
-        dispatch(fetchMovies(ENDPOINT_DISCOVER));
+        promise = dispatch(fetchMovies(`${ENDPOINT_DISCOVER}&page=${page}`));
       }
     };
+    setLoading(true);
     getMovies();
+    return () => {
+      promise?.abort?.();
+    };
   }, []);
 
+  useEffect(() => {
+    let promise;
+    const windowScrollHandler = () => {
+      if (loading) return;
+      const currentScrollProgress = Math.round(window.innerHeight + document.documentElement.scrollTop);
+      if (currentScrollProgress === Math.round(document.documentElement.offsetHeight) || currentScrollProgress + 1 === Math.round(document.documentElement.offsetHeight) || currentScrollProgress - 1 === Math.round(document.documentElement.offsetHeight)) {
+        promise = getSearchResults(searchQueryRef.current || "");
+      }
+    };
+
+    window.addEventListener("scroll", windowScrollHandler);
+    return () => {
+      window.removeEventListener("scroll", windowScrollHandler);
+      promise?.abort?.();
+    };
+  }, [getSearchResults, loading]);
+
   return (
-    <div className="App">
+    <div className={CSS.App}>
       <Header searchMovies={searchMovies} />
 
-      <div className="container">
+      <div className={`${CSS.container} container`}>
         {videoKey && (
           <Modal onClose={() => setVideoKey(null)}>
             <YouTubePlayer videoKey={videoKey} />

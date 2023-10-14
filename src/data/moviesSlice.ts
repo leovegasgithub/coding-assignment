@@ -8,22 +8,30 @@ export const fetchMovies = createAsyncThunk("fetch-movies", async (apiUrl: strin
 
 interface IMoviesSlice {
   movies: IMovie[];
+  page: number;
   fetchStatus: string;
 }
 
 const initialState: IMoviesSlice = {
   movies: [],
-  fetchStatus: "",
+  page: 1,
+  fetchStatus: ""
 };
 
 const moviesSlice = createSlice({
   name: "movies",
   initialState,
-  reducers: {},
+  reducers: {
+    removeAllMovies: (state) => {
+        state.movies = [];
+        state.page = 1;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchMovies.fulfilled, (state, action) => {
-        state.movies = action.payload.results;
+        state.movies = [...state.movies, ...action.payload.results];
+        state.page = state.page + 1;
         state.fetchStatus = "success";
       })
       .addCase(fetchMovies.pending, (state) => {
@@ -35,4 +43,6 @@ const moviesSlice = createSlice({
   },
 });
 
+const { removeAllMovies } = moviesSlice.actions;
+export { removeAllMovies };
 export default moviesSlice;

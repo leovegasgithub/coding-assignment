@@ -2,33 +2,28 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { removeAllWatchLater } from "../data/watchLaterSlice";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
-// import "../styles/starred.scss"; // TODO - fix
-import Movie from "./Movie";
+import CSS from "../styles/watchLater.module.scss";
+import Movies from "./Movies";
 
 const WatchLater = ({ viewTrailer }) => {
-  const watchLater = useAppSelector((state) => state.watchLater);
+  const watchLaterMovies = useAppSelector((state) => state.watchLater.watchLaterMovies);
   const dispatch = useAppDispatch();
 
   return (
-    <div className="starred" data-testid="watch-later-div">
-      {watchLater.watchLaterMovies.length > 0 && (
-        <div data-testid="watch-later-movies" className="starred-movies">
-          <h6 className="header">Watch Later List</h6>
-          <div className="row">
-            {watchLater.watchLaterMovies.map((movie) => (
-              <Movie movie={movie} key={movie.id} viewTrailer={viewTrailer} />
-            ))}
-          </div>
-
+    <div className={CSS.WatchLater} data-testid="watch-later-div">
+      {watchLaterMovies.length > 0 && (
+        <>
+        <h6 className={CSS.header}>Watch Later List</h6>
+          <Movies movies={watchLaterMovies} viewTrailer={viewTrailer} />
           <footer className="text-center">
-            <button className="btn btn-primary" onClick={() => dispatch(removeAllWatchLater())}>
+            <button className={`${CSS.btn} btn btn-primary`} onClick={() => dispatch(removeAllWatchLater())}>
               Empty list
             </button>
           </footer>
-        </div>
+        </>
       )}
 
-      {watchLater.watchLaterMovies.length === 0 && (
+      {watchLaterMovies.length === 0 && (
         <div className="text-center empty-cart">
           <i className="bi bi-heart" />
           <p>You have no movies saved to watch later.</p>

@@ -8,7 +8,7 @@ import { IMovie } from "../lib/types";
 
 interface IParentProps {
   movie: Partial<IMovie>;
-  viewTrailer: any;
+  viewTrailer: (movie: Partial<IMovie>) => void;
 }
 
 const Movie = ({ movie, viewTrailer }: IParentProps) => {

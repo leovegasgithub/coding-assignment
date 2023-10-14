@@ -3,7 +3,11 @@ import { Link, NavLink } from "react-router-dom";
 import { useAppSelector } from "../lib/hooks";
 import CSS from "../styles/header.module.scss";
 
-const Header = ({ searchMovies }) => {
+interface IParentProps {
+  searchMovies: (query: string) => void;
+}
+
+const Header = ({ searchMovies }: IParentProps) => {
   const { starredMovies } = useAppSelector((state) => state.starred);
 
   return (
@@ -16,11 +20,11 @@ const Header = ({ searchMovies }) => {
         <NavLink to="/starred" data-testid="nav-starred" className={CSS.navStarred}>
           {starredMovies.length > 0 ? (
             <>
-              <i className={`${CSS.bi} ${CSS.biStarFill} ${CSS.biStarFillWhite}`} />
+              <i className={`${CSS.bi} bi bi-star ${CSS.biStarFill} ${CSS.biStarFillWhite}`} />
               <sup className={CSS.starNumber}>{starredMovies.length}</sup>
             </>
           ) : (
-            <i className={`${CSS.bi} ${CSS.biStar}`} />
+            <i className={`${CSS.bi} bi bi-star`} />
           )}
         </NavLink>
         <NavLink to="/watch-later" className={CSS.navFav}>
@@ -28,18 +32,17 @@ const Header = ({ searchMovies }) => {
         </NavLink>
       </nav>
 
-      <div className={`${CSS.inputGroup} ${CSS.rounded}`}>
+      <div className={`${CSS.inputGroup} rounded`}>
         <Link to="/" onClick={(e) => searchMovies("")} className={CSS.searchLink}>
           <input
             type="search"
             data-testid="search-movies"
             onKeyUp={(e) => {
-              if (e.target) {
-                console.log(e.target);
-                // searchMovies(e.target.value);
+              if (e.nativeEvent.target) {
+                searchMovies((e.nativeEvent.target as HTMLInputElement).value);
               }
             }}
-            className={`${CSS.formControl} ${CSS.rounded}`}
+            className={`formControl rounded`}
             placeholder="Search movies..."
             aria-label="Search movies"
             aria-describedby="search-addon"

@@ -4,8 +4,8 @@ import CSS from "../styles/movies.module.scss";
 import { IMovie } from "../lib/types";
 
 interface IParentProps {
-  movies: IMovie[];
-  viewTrailer: any;
+  movies: Partial<IMovie>[];
+  viewTrailer: (movie: Partial<IMovie>) => void;
 }
 
 const Movies = ({ movies, viewTrailer }: IParentProps) => {
