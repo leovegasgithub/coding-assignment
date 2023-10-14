@@ -1,35 +1,35 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useAppSelector } from "../lib/hooks";
-import "../styles/header.scss";
+import CSS from "../styles/header.module.scss";
 
 const Header = ({ searchMovies }) => {
   const { starredMovies } = useAppSelector((state) => state.starred);
 
   return (
-    <header>
+    <header className={CSS.Header}>
       <Link to="/" data-testid="home" onClick={() => searchMovies("")}>
-        <i className="bi bi-film" />
+        <i className={`bi bi-film ${CSS.bi} ${CSS.biFilm}`} />
       </Link>
 
       <nav>
-        <NavLink to="/starred" data-testid="nav-starred" className="nav-starred">
+        <NavLink to="/starred" data-testid="nav-starred" className={CSS.navStarred}>
           {starredMovies.length > 0 ? (
             <>
-              <i className="bi bi-star-fill bi-star-fill-white" />
-              <sup className="star-number">{starredMovies.length}</sup>
+              <i className={`${CSS.bi} ${CSS.biStarFill} ${CSS.biStarFillWhite}`} />
+              <sup className={CSS.starNumber}>{starredMovies.length}</sup>
             </>
           ) : (
-            <i className="bi bi-star" />
+            <i className={`${CSS.bi} ${CSS.biStar}`} />
           )}
         </NavLink>
-        <NavLink to="/watch-later" className="nav-fav">
+        <NavLink to="/watch-later" className={CSS.navFav}>
           watch later
         </NavLink>
       </nav>
 
-      <div className="input-group rounded">
-        <Link to="/" onClick={(e) => searchMovies("")} className="search-link">
+      <div className={`${CSS.inputGroup} ${CSS.rounded}`}>
+        <Link to="/" onClick={(e) => searchMovies("")} className={CSS.searchLink}>
           <input
             type="search"
             data-testid="search-movies"
@@ -39,7 +39,7 @@ const Header = ({ searchMovies }) => {
                 // searchMovies(e.target.value);
               }
             }}
-            className="form-control rounded"
+            className={`${CSS.formControl} ${CSS.rounded}`}
             placeholder="Search movies..."
             aria-label="Search movies"
             aria-describedby="search-addon"

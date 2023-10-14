@@ -2,19 +2,19 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { clearAllStarred } from "../data/starredSlice";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
-import "../styles/starred.scss";
 import Movie from "./Movie";
+import CSS from '../styles/starred.module.scss';
 
 const Starred = ({ viewTrailer }) => {
   const starred = useAppSelector((state) => state.starred);
   const dispatch = useAppDispatch();
 
   return (
-    <div className="starred" data-testid="starred">
+    <div className={CSS.Starred} data-testid="starred">
       {starred.starredMovies.length > 0 && (
-        <div data-testid="starred-movies" className="starred-movies">
-          <h6 className="header">Starred movies</h6>
-          <div className="row">
+        <div data-testid="starred-movies" className={CSS.starredMovies}>
+          <h6 className={CSS.header}>Starred movies</h6>
+          <div className={CSS.row}>
             {starred.starredMovies.map((movie) => (
               <Movie movie={movie} key={movie.id} viewTrailer={viewTrailer} closeCard={undefined} />
             ))}

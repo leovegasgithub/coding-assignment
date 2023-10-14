@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { removeAllWatchLater } from "../data/watchLaterSlice";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
-import "../styles/starred.scss";
+// import "../styles/starred.scss"; // TODO - fix
 import Movie from "./Movie";
 
 const WatchLater = ({ viewTrailer }) => {
