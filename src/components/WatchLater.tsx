@@ -16,7 +16,7 @@ const WatchLater = ({ viewTrailer }) => {
           <h6 className="header">Watch Later List</h6>
           <div className="row">
             {watchLater.watchLaterMovies.map((movie) => (
-              <Movie movie={movie} key={movie.id} viewTrailer={viewTrailer} closeCard={undefined} />
+              <Movie movie={movie} key={movie.id} viewTrailer={viewTrailer} />
             ))}
           </div>
 

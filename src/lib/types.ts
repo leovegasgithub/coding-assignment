@@ -8,7 +8,7 @@ export interface IMovie {
     overview: string;
     popularity: number;
     poster_path: string;
-    release_data: string;
+    release_date: string;
     title: string;
     video: boolean;
     vote_average: number;

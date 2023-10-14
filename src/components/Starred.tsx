@@ -16,7 +16,7 @@ const Starred = ({ viewTrailer }) => {
           <h6 className={CSS.header}>Starred movies</h6>
           <div className={CSS.row}>
             {starred.starredMovies.map((movie) => (
-              <Movie movie={movie} key={movie.id} viewTrailer={viewTrailer} closeCard={undefined} />
+              <Movie movie={movie} key={movie.id} viewTrailer={viewTrailer} />
             ))}
           </div>
 

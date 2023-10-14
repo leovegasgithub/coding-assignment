@@ -1,12 +1,12 @@
-import React from 'react';
-import ReactPlayer from 'react-player'
+import React from "react";
+import ReactPlayer from "react-player";
 
-const YoutubePlayer = ({ videoKey }) => (<ReactPlayer 
-  className="video-player" 
-  url={`https://www.youtube.com/watch?v=${videoKey}`} 
-  controls={true}
-  playing={true}
-  data-testid="youtube-player"
-/>);
+interface IParentProps {
+  videoKey: string;
+}
+
+const YoutubePlayer = ({ videoKey }: IParentProps) => {
+  return <ReactPlayer className="video-player" url={`https://www.youtube.com/watch?v=${videoKey}`} controls={true} playing={true} data-testid="youtube-player" />;
+};
 
 export default YoutubePlayer;

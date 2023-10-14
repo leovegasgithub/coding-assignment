@@ -1,0 +1,24 @@
+.Modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  background-color: rgba(0,0,0,0.8);
+  .ModalInner {
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    button {
+        border-radius: 5px;
+        outline: 0px;
+        border: 0px;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+  }
+}
