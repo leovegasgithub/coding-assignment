@@ -9,6 +9,7 @@ describe("MovieSlice test", () => {
         movies: [],
         page: 1,
         fetchStatus: "",
+        loading: false,
       },
       action
     );
@@ -25,6 +26,7 @@ describe("MovieSlice test", () => {
         movies: [],
         page: 1,
         fetchStatus: "",
+        loading: false,
       },
       action
     );
@@ -38,6 +40,7 @@ describe("MovieSlice test", () => {
         movies: [],
         page: 1,
         fetchStatus: "",
+        loading: false,
       },
       action
     );
