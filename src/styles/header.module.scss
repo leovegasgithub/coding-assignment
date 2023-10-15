@@ -1,4 +1,4 @@
-header {
+.Header {
     position: fixed;
     z-index: 999;
     width: 100%;
@@ -9,7 +9,7 @@ header {
     border: 1px solid transparent;
     border-radius: 0;
 
-    .input-group {
+    .inputGroup {
       float: right;
       width: 200px;
       margin: 0.7rem 0 0;
@@ -27,7 +27,7 @@ header {
         color: #fff;
       }
 
-      .search-link {
+      .searchLink {
         color: #111111;
         text-decoration: none;
       }
@@ -42,7 +42,7 @@ header {
         display: inline-block;
         margin: 0 0.2rem 0;
 
-        &.nav-fav {
+        &.navFav {
           font-size: 0.8rem;
           color: #ccc;          
           text-decoration: none;
@@ -63,7 +63,7 @@ header {
         color: #fff;
       }
 
-      + .star-number {
+      + .starNumber {
         position: absolute;
         top: 1rem;
         right: 6.1rem;
@@ -75,24 +75,24 @@ header {
         border-radius: 50%;
       }     
       
-      &.bi-film {
+      &.biFilm {
         float: left;
         margin-left: 1.5rem;
         font-size: 1.3rem;
         color: #e9ecef;
       }
 
-      &.bi-search {
+      &.biSearch {
 
       }
 
-      &.bi-star-fill,
-      &.bi-heart-fill{
+      &.biStarFill,
+      &.biHeartFill{
         color: #e50914;
         animation: blink .4s;
 
-        &.bi-star-fill-white,
-        &.bi-heart-fill-white {
+        &.biStarFillWhite,
+        &.biHeartFillWhite {
           color: #fff;
         }
       }

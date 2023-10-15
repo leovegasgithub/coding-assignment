@@ -1,9 +1,8 @@
-.starred {
-  
+.WatchLater {
     footer {
         margin-top: 50px;
 
-        .total-price {
+        .totalPrice {
             font-size: 1.8rem;
         }
 
@@ -15,12 +14,12 @@
             border: none;
         }
 
-        .back-button {
+        .backButton {
             color: #000;
             background: #efefef;
         }
 
-        .back-button:hover {
+        .backButton:hover {
             background: #dedede;
         }
     }

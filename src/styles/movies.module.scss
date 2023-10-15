@@ -1,0 +1,6 @@
+.Movies {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows: auto;
+    gap: 20px;
+}
