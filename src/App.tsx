@@ -19,7 +19,7 @@ const App = () => {
   const pageRef = useRef<number>(page);
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [loading, setLoading] = useState(false);
+  const loading = useAppSelector((state) => state.movies.loading);
   const searchQuery = searchParams.get("search");
   const searchQueryRef = useRef<string | null>(searchQuery);
   const [videoKey, setVideoKey] = useState<null | undefined>();
@@ -35,20 +35,15 @@ const App = () => {
 
   const getSearchResults = async (query: string) => {
     if (loading) return;
-    setLoading(true);
-
-    if (searchQueryRef.current !== "") {
-      setSearchParams(createSearchParams({ search: query }));
-      return dispatch(fetchMovies(`${ENDPOINT_SEARCH}&page=${pageRef.current}&query=` + searchQueryRef.current));
+    const q = query || searchQueryRef.current;
+    if (q !== "" && q !== null) {
+      setSearchParams(createSearchParams({ search: q }));
+      return dispatch(fetchMovies(`${ENDPOINT_SEARCH}&page=${pageRef.current}&query=` + q.replaceAll(" ", "+")));
     } else {
       setSearchParams();
       return dispatch(fetchMovies(`${ENDPOINT_DISCOVER}&page=${pageRef.current}`));
     }
   };
-
-  useEffect(() => {
-    setLoading(false);
-  }, [movies.length]);
 
   const searchMovies = (query: string) => {
     navigate("/");
@@ -80,7 +75,6 @@ const App = () => {
         promise = dispatch(fetchMovies(`${ENDPOINT_DISCOVER}&page=${page}`));
       }
     };
-    setLoading(true);
     getMovies();
     return () => {
       promise?.abort?.();

@@ -10,12 +10,14 @@ interface IMoviesSlice {
   movies: IMovie[];
   page: number;
   fetchStatus: string;
+  loading: boolean;
 }
 
 const initialState: IMoviesSlice = {
   movies: [],
   page: 1,
-  fetchStatus: ""
+  fetchStatus: "",
+  loading: false
 };
 
 const moviesSlice = createSlice({
@@ -31,13 +33,18 @@ const moviesSlice = createSlice({
     builder
       .addCase(fetchMovies.fulfilled, (state, action) => {
         state.movies = [...state.movies, ...action.payload.results];
-        state.page = state.page + 1;
+        if(action.payload.total_pages > state.page) {
+          state.page = state.page + 1;
+        }
+        state.loading = false;
         state.fetchStatus = "success";
       })
       .addCase(fetchMovies.pending, (state) => {
+        state.loading = true;
         state.fetchStatus = "loading";
       })
       .addCase(fetchMovies.rejected, (state) => {
+        state.loading = false;
         state.fetchStatus = "error";
       });
   },
