@@ -1,10 +1,9 @@
-import React from "react";
 import placeholder from "../assets/not-found-500X750.jpeg";
-import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import { starMovie, unstarMovie } from "../data/starredSlice";
 import { addToWatchLater, removeFromWatchLater } from "../data/watchLaterSlice";
-import CSS from "../styles/movie.module.scss";
+import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import { IMovie } from "../lib/types";
+import CSS from "../styles/movie.module.scss";
 
 interface IParentProps {
   movie: Partial<IMovie>;

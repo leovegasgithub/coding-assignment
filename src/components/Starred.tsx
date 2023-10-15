@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { clearAllStarred } from "../data/starredSlice";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
